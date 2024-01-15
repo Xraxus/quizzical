@@ -5,8 +5,8 @@
 
 .fieldset {
   border: 0;
-  margin: 2em 0;
-  padding-bottom: 2em;
+  margin: 0.75em 0;
+  padding-bottom: 1.5em;
   border-bottom: 2px solid #dbdef0;
 }
 
@@ -30,6 +30,7 @@
   border: 1px solid #4d5b9e;
   border-radius: 16px;
   margin-right: 1em;
+  margin-bottom: 0.25em;
 }
 
 .fieldset input[type="radio"]:checked + label {
