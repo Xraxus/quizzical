@@ -7,36 +7,47 @@ function Quiz() {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchQuestions() {
-      const response = await fetch(
-        "https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple"
-      );
-      const data = await response.json();
+      try {
+        const response = await fetch(
+          "https://opentdb.com/api.php?amount=5&category=9&difficulty=easy&type=multiple"
+        );
+        const data = await response.json();
 
-      setQuestions(() => {
-        const preppedQuestions = [];
-
-        for (let item of data.results) {
-          const shuffledAnswers = [
-            ...item.incorrect_answers,
-            item.correct_answer,
-          ].sort((a, b) => 0.5 - Math.random());
-
-          const correctAnswerIndex = shuffledAnswers.indexOf(
-            item.correct_answer
-          );
-
-          preppedQuestions.push({
-            question: item.question,
-            answers: shuffledAnswers,
-            correct: correctAnswerIndex,
-          });
+        if (data.response_code !== 0) {
+          throw new Error("Questions couldn't load");
         }
+        setQuestions(() => {
+          const preppedQuestions = [];
 
-        return preppedQuestions;
-      });
+          for (let item of data.results) {
+            const shuffledAnswers = [
+              ...item.incorrect_answers,
+              item.correct_answer,
+            ].sort((a, b) => 0.5 - Math.random());
+
+            const correctAnswerIndex = shuffledAnswers.indexOf(
+              item.correct_answer
+            );
+
+            preppedQuestions.push({
+              question: item.question,
+              answers: shuffledAnswers,
+              correct: correctAnswerIndex,
+            });
+          }
+
+          return preppedQuestions;
+        });
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error:", error);
+        setTimeout(fetchQuestions, 3000);
+      }
     }
 
     fetchQuestions();
@@ -58,7 +69,7 @@ function Quiz() {
             ></input>
             <label
               key={index}
-              for={`${i}-answer-${index}`}
+              htmlFor={`${i}-answer-${index}`}
               className={
                 formSubmitted
                   ? selectedAnswers[i] === index //   - If the current answer is selected:
@@ -102,13 +113,20 @@ function Quiz() {
   }
 
   return (
-    <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
-      {generateQuestionElements()}
-      <button type="submit">
-        {formSubmitted ? "Go back" : "Check answers"}
-      </button>
-      {formSubmitted && <p>You scored {score}/5 correct answers</p>}
-    </form>
+    <>
+      {loading && <div className={styles.loader}></div>}
+      {!loading && (
+        <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
+          {generateQuestionElements()}
+          {!loading && (
+            <button type="submit">
+              {formSubmitted ? "Go back" : "Check answers"}
+            </button>
+          )}
+          {formSubmitted && <p>You scored {score}/5 correct answers</p>}
+        </form>
+      )}
+    </>
   );
 }
 
