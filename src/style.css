@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f7fb;
+  margin: 0;
+  font-family: "Karla", sans-serif;
+}
+
+button {
+  font-family: "Karla", sans-serif;
+}
+
+main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+}
+
+.blob {
+  position: fixed;
+  height: 400px;
+  width: 400px;
+  overflow: hidden;
+}
+
+.blob-top {
+  top: -100px;
+  right: -100px;
+}
+
+.blob-bottom {
+  bottom: -100px;
+  left: -100px;
+}
