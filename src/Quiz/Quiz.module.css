@@ -43,6 +43,9 @@
 .fieldset input[type="radio"]:focus + label {
   outline: 1px solid #444444;
 }
+.fieldset input[type="radio"]:disabled + label {
+  cursor: not-allowed;
+}
 
 .fieldset label:hover {
   background-color: #fffce8;
