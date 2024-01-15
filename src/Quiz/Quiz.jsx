@@ -89,18 +89,24 @@ function Quiz() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setFormSubmitted(true);
 
-    for (let i = 0; i < questions.length; i++) {
-      if (selectedAnswers[i] === questions[i].correct)
-        setScore((prevScore) => prevScore + 1);
+    if (!formSubmitted) {
+      for (let i = 0; i < questions.length; i++) {
+        if (selectedAnswers[i] === questions[i].correct)
+          setScore((prevScore) => prevScore + 1);
+      }
+      setFormSubmitted(true);
+    } else {
+      location.reload();
     }
   }
 
   return (
     <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
       {generateQuestionElements()}
-      <button type="submit">Check answers</button>
+      <button type="submit">
+        {formSubmitted ? "Go back" : "Check answers"}
+      </button>
       {formSubmitted && <p>You scored {score}/5 correct answers</p>}
     </form>
   );
