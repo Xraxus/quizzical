@@ -1,6 +1,6 @@
 import styles from "./Quiz.module.css";
 import { decode } from "html-entities";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 
 function Quiz() {
   const [questions, setQuestions] = useState([]);
@@ -58,7 +58,7 @@ function Quiz() {
       <fieldset key={i} className={styles.fieldset}>
         <legend>{decode(q.question)}</legend>
         {q.answers.map((answer, index) => (
-          <>
+          <Fragment key={index}>
             <input
               type="radio"
               value={index}
@@ -68,7 +68,6 @@ function Quiz() {
               disabled={formSubmitted}
             ></input>
             <label
-              key={index}
               htmlFor={`${i}-answer-${index}`}
               className={
                 formSubmitted
@@ -84,7 +83,7 @@ function Quiz() {
             >
               {decode(answer)}
             </label>
-          </>
+          </Fragment>
         ))}
       </fieldset>
     ));
