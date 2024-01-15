@@ -43,32 +43,36 @@ function Quiz() {
 
   function generateQuestionElements() {
     return questions.map((q, i) => (
-      <fieldset key={i}>
+      <fieldset key={i} className={styles.fieldset}>
         <legend>{decode(q.question)}</legend>
         {q.answers.map((answer, index) => (
-          <label
-            key={index}
-            className={
-              formSubmitted
-                ? selectedAnswers[i] === index
-                  ? q.correct === index
-                    ? styles.correctAnswer
-                    : styles.incorrectAnswer
-                  : q.correct === index
-                  ? styles.correctAnswer
-                  : ""
-                : ""
-            }
-          >
-            {decode(answer)}
+          <>
             <input
               type="radio"
               value={index}
+              id={`${i}-answer-${index}`}
               name={`question-${i}`}
               onChange={() => handleAnswerSelect(i, index)}
               disabled={formSubmitted}
             ></input>
-          </label>
+            <label
+              key={index}
+              for={`${i}-answer-${index}`}
+              className={
+                formSubmitted
+                  ? selectedAnswers[i] === index //   - If the current answer is selected:
+                    ? q.correct === index
+                      ? styles.correctAnswer //     - If the selected answer is correct, apply styles.correctAnswer.
+                      : styles.incorrectAnswer //     - If the selected answer is incorrect, apply styles.incorrectAnswer.
+                    : q.correct === index //   - If the current answer is not selected but it is the correct answer, apply styles.correctAnswer.
+                    ? styles.correctAnswer // - If formSubmitted is false, no additional styles are applied.
+                    : ""
+                  : ""
+              }
+            >
+              {decode(answer)}
+            </label>
+          </>
         ))}
       </fieldset>
     ));
@@ -85,11 +89,10 @@ function Quiz() {
   function handleSubmit(e) {
     e.preventDefault();
     setFormSubmitted(true);
-    // You can perform additional logic here after the form is submitted
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
+    <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
       {generateQuestionElements()}
       <button type="submit">Check answers</button>
     </form>
