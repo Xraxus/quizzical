@@ -6,6 +6,7 @@ function Quiz() {
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -89,12 +90,18 @@ function Quiz() {
   function handleSubmit(e) {
     e.preventDefault();
     setFormSubmitted(true);
+
+    for (let i = 0; i < questions.length; i++) {
+      if (selectedAnswers[i] === questions[i].correct)
+        setScore((prevScore) => prevScore + 1);
+    }
   }
 
   return (
     <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
       {generateQuestionElements()}
       <button type="submit">Check answers</button>
+      {formSubmitted && <p>You scored {score}/5 correct answers</p>}
     </form>
   );
 }

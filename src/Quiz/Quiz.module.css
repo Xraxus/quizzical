@@ -55,7 +55,8 @@
 }
 
 .form button {
-  margin-block: 1em;
+  display: inline-block;
+  margin: 1em 1em 1em 0;
   font-size: 1.3rem;
   font-weight: 600;
   border: 0;
@@ -63,4 +64,9 @@
   color: #f5f7fb;
   padding: 0.5em 2em;
   border-radius: 16px;
+}
+
+.form p {
+  display: inline-block;
+  font-size: 1.25rem;
 }
