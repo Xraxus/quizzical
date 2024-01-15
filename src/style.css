@@ -28,12 +28,21 @@ main {
   z-index: -1;
 }
 
-.blob-top {
+.blob-top-right {
   top: -100px;
   right: -100px;
 }
+.blob-top-left {
+  top: 0;
+  left: -50px;
+}
 
-.blob-bottom {
+.blob-bottom-left {
   bottom: -100px;
   left: -100px;
+}
+
+.blob-bottom-right {
+  bottom: 0;
+  right: 0;
 }
